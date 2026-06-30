@@ -23,8 +23,8 @@
                     <i class="fa-solid fa-bus text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-sm font-black text-slate-800 tracking-tight">TransCoop</h1>
-                    <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Exploitation</p>
+                    <h1 class="text-sm font-black text-slate-800 tracking-tight">KOPV</h1>
+                    <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Management</p>
                 </div>
             </div>
 
@@ -98,27 +98,39 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-sm">
-                        <% for(Voyages v : voyages) { %>
+                        <% 
+                            for(Voyages v : voyages) {
+                                String reference = "V-00" + v.getId();
+                                String statut = v.getVoyageStatuts().get(0).getStatut().getLibelle();
+                                String villeDepart = v.getTrajet().getGareDepart().getVille();
+                                String villeArrivee = v.getTrajet().getGareArrivee().getVille();
+                                String duree = v.getDureeEstimeeMinutes() + " min";
+                                String modeleVehicule = v.getVehicule().getModele();
+                                String immatriculation = v.getVehicule().getImmatriculation();
+                                String nomChauffeur = v.getChauffeur().getNom() + " " + v.getChauffeur().getPrenom();
+                                String dateDepart = v.getDateHeureDepart().toLocalDate().toString();
+                                String heureDepart = v.getDateHeureDepart().toLocalTime().toString();
+                        %>
                             <tr class="hover:bg-slate-50/40 transition">
                                 <td class="py-4 px-4">
-                                    <div class="font-bold text-slate-700">V-00<%= v.getId() %></div>
-                                    <span class="text-[9px] font-black uppercase text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= v.getVoyageStatuts().get(0).getStatut().getLibelle() %></span>
+                                    <div class="font-bold text-slate-700"><%= reference %></div>
+                                    <span class="text-[9px] font-black uppercase text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= statut %></span>
                                 </td>
                                 <td class="py-4 px-4">
                                     <div class="font-bold text-slate-700 flex items-center gap-1.5">
-                                        <span><%= v.getTrajet().getGareDepart().getVille() %></span>
+                                        <span><%= villeDepart %></span>
                                         <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
-                                        <span><%= v.getTrajet().getGareArrivee().getVille() %></span>
+                                        <span><%= villeArrivee %></span>
                                     </div>
-                                    <div class="text-[10px] font-bold text-emerald-600 mt-0.5">Duree — <%= v.getDureeEstimeeMinutes() %> min</div>
+                                    <div class="text-[10px] font-bold text-emerald-600 mt-0.5">Duree — <%= duree %></div>
                                 </td>
                                 <td class="py-4 px-4 text-xs">
-                                    <div class="font-semibold text-slate-700"><i class="fa-solid fa-van-shuttle mr-1 text-slate-400"></i><%= v.getVehicule().getModele() %> (<%= v.getVehicule().getImmatriculation() %>)</div>
-                                    <div class="text-slate-400 mt-0.5"><i class="fa-solid fa-user-tie mr-1 text-[10px]"></i>Chauffeur: <%= v.getChauffeur().getNom() %> <%= v.getChauffeur().getPrenom() %></div>
+                                    <div class="font-semibold text-slate-700"><i class="fa-solid fa-van-shuttle mr-1 text-slate-400"></i><%= modeleVehicule %> (<%= immatriculation %>)</div>
+                                    <div class="text-slate-400 mt-0.5"><i class="fa-solid fa-user-tie mr-1 text-[10px]"></i>Chauffeur: <%= nomChauffeur %></div>
                                 </td>
                                 <td class="py-4 px-4">
-                                    <div class="font-bold text-slate-700"><%= v.getDateHeureDepart().toLocalDate() %></div>
-                                    <div class="text-[11px] text-slate-400 font-medium">À <%= v.getDateHeureDepart().toLocalTime() %></div>
+                                    <div class="font-bold text-slate-700"><%= dateDepart %></div>
+                                    <div class="text-[11px] text-slate-400 font-medium">À <%= heureDepart %></div>
                                 </td>
                                 <td class="py-4 px-4 text-right">
                                     <div class="flex items-center justify-end gap-1.5">
