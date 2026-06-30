@@ -22,7 +22,7 @@ public class Gares {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String nom;
     private String ville;
@@ -38,7 +38,8 @@ public class Gares {
     @OneToMany(mappedBy = "gareArrivee")
     private List<Trajets> trajetsArrivee;
 
-    public Gares() {}
+    public Gares() {
+    }
 
     public Gares(String nom, String ville, Point position) {
         this.nom = nom;

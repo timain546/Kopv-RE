@@ -25,7 +25,7 @@ public class Trajets {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_gare_depart", nullable = false)
@@ -41,7 +41,8 @@ public class Trajets {
     @OneToMany(mappedBy = "trajet")
     private List<Voyages> voyages;
 
-    public Trajets() {}
+    public Trajets() {
+    }
 
     public Trajets(Gares gareDepart, Gares gareArrivee, BigDecimal distanceKm) {
         this.gareDepart = gareDepart;

@@ -1,20 +1,8 @@
 package com.cooperative.transport.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OrderBy;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +15,7 @@ public class Voyages {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_trajet", nullable = false)
@@ -41,27 +29,36 @@ public class Voyages {
     @JoinColumn(name = "id_chauffeur", nullable = false)
     private Utilisateurs chauffeur;
 
-    @Column(name = "date_heure_depart")
+    @Column(name = "date_heure_depart", nullable = false)
     private LocalDateTime dateHeureDepart;
 
-    @Column(name = "duree_estimee_minutes")
+    @Column(name = "duree_estimee_minutes", nullable = false)
     private Integer dureeEstimeeMinutes;
 
-    @Column(name = "tarif", precision = 10, scale = 2)
+    @Column(name = "tarif", precision = 10, scale = 2, nullable = false)
     private BigDecimal tarif;
 
-    @OneToMany(mappedBy = "voyage")
+    @OneToMany(mappedBy = "voyage", fetch = FetchType.LAZY)
     @OrderBy("dateModification DESC")
     private List<VoyageStatut> voyageStatuts;
 
-    public Voyages() {}
+    public Voyages() {
+    }
 
-    public Voyages(Trajets trajet, Vehicules vehicule, Utilisateurs chauffeur, LocalDateTime dateHeureDepart, Integer dureeEstimeeMinutes, BigDecimal tarif) {
+    public Voyages(Trajets trajet, Vehicules vehicule, Utilisateurs chauffeur, LocalDateTime dateHeureDepart,
+            Integer dureeEstimeeMinutes, BigDecimal tarif) {
         this.trajet = trajet;
         this.vehicule = vehicule;
         this.chauffeur = chauffeur;
         this.dateHeureDepart = dateHeureDepart;
         this.dureeEstimeeMinutes = dureeEstimeeMinutes;
         this.tarif = tarif;
+    }
+
+    public VoyageStatut getStatutActuel() {
+        if (voyageStatuts != null && !voyageStatuts.isEmpty()) {
+            return voyageStatuts.get(0);
+        }
+        return null;
     }
 }

@@ -101,7 +101,7 @@
                         <% 
                             for(Voyages v : voyages) {
                                 String reference = "V-00" + v.getId();
-                                String statut = v.getVoyageStatuts().get(0).getStatut().getLibelle();
+                                String statut = v.getStatutActuel().getStatut().getLibelle();
                                 String villeDepart = v.getTrajet().getGareDepart().getVille();
                                 String villeArrivee = v.getTrajet().getGareArrivee().getVille();
                                 String duree = v.getDureeEstimeeMinutes() + " min";

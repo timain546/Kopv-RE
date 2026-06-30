@@ -18,14 +18,15 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String libelle;
 
     @OneToMany(mappedBy = "role")
     private List<Utilisateurs> utilisateurs;
 
-    public Role() {}
+    public Role() {
+    }
 
     public Role(String libelle) {
         this.libelle = libelle;

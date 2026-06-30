@@ -24,7 +24,7 @@ public class Utilisateurs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String nom;
     private String prenom;
@@ -41,7 +41,8 @@ public class Utilisateurs {
     @OneToMany(mappedBy = "chauffeur")
     private List<Voyages> voyages;
 
-    public Utilisateurs() {}
+    public Utilisateurs() {
+    }
 
     public Utilisateurs(String nom, String prenom, Role role, String email, String motDePasse) {
         this.nom = nom;

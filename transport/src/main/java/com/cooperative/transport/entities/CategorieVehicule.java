@@ -20,7 +20,7 @@ public class CategorieVehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String libelle;
 
@@ -30,7 +30,8 @@ public class CategorieVehicule {
     @OneToMany(mappedBy = "categorie")
     private List<TarifVoyage> tarifVoyages;
 
-    public CategorieVehicule() {}
+    public CategorieVehicule() {
+    }
 
     public CategorieVehicule(String libelle) {
         this.libelle = libelle;
