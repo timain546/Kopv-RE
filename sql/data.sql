@@ -29,9 +29,9 @@ INSERT INTO trajets (id_gare_depart, id_gare_arrivee, distance_km) VALUES
 (3, 1, 15.0);
 
 INSERT INTO voyages (id_trajet, id_vehicule, id_chauffeur, duree_estimee_minutes, date_heure_depart,tarif) VALUES
-(1, 1, 1, 15, '2026-06-01 08:00:00',30.00),
-(2, 2, 2, 30, '2026-06-01 09:00:00',30.00), 
-(3, 3, 3, 45, '2026-06-01 10:00:00',30.00);
+(1, 1, 1, 15, '2026-06-01 08:00:00', 30.00),
+(2, 2, 2, 30, '2026-06-01 09:00:00', 30.00),
+(3, 3, 3, 45, '2026-06-01 10:00:00', 30.00);
 
 INSERT INTO tarif_voyage (id_categorie, prix, date_modification) VALUES
 (1, 30.00, '2026-01-01'),
@@ -49,6 +49,6 @@ INSERT INTO statut_voyage (libelle) VALUES
 ('En panne');
 
 INSERT INTO voyage_statut (id_voyage, id_statut, date_modification) VALUES
-(4, 1, '2026-06-01'),
-(2, 2, '2026-06-01'),
-(3, 3, '2026-06-01');
+(3, 1, '2026-06-01'),
+(1, 2, '2026-06-01'),
+(2, 3, '2026-06-01');
