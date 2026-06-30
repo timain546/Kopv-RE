@@ -1,0 +1,34 @@
+INSERT INTO role (libelle) VALUES
+('Chauffeur'),
+('RE');
+
+INSERT INTO utilisateurs (nom, prenom, id_role, email, mot_de_passe) VALUES
+('Rakoto', 'John', 1, 'john@gmail.com', '1234'), 
+('Rabe', 'Jean', 1, 'jean@gmail.com', '1234'),   
+('Rado', 'Paul', 1, 'paul@gmail.com', '1234'),   
+('Randria', 'Alice', 2, 'alice@gmail.com', '1234');
+
+INSERT INTO categorie_vehicule (libelle) VALUES
+('VIP'),
+('Premium'),
+('Standard');
+
+INSERT INTO vehicules (immatriculation, modele, id_categorie, nombre_places) VALUES
+('1234ABC', 'Toyota Camry', 1, 4),
+('5678DEF', 'Honda Accord', 2, 4),
+('9012GHI', 'Ford Focus', 3, 4);
+
+INSERT INTO gares (nom, ville, position) VALUES
+('Gare Centrale', 'Antananarivo', ST_SetSRID(ST_MakePoint(47.5162, -18.8792), 4326)),
+('Gare Nord', 'Antananarivo', ST_SetSRID(ST_MakePoint(47.5165, -18.8795), 4326)),
+('Gare Sud', 'Antananarivo', ST_SetSRID(ST_MakePoint(47.5168, -18.8798), 4326));
+
+INSERT INTO trajets (id_gare_depart, id_gare_arrivee, distance_km) VALUES
+(1, 2, 5.0),
+(2, 3, 10.0),
+(3, 1, 15.0);
+
+INSERT INTO voyages (id_trajet, id_vehicule, id_chauffeur, duree_estimee_minutes, tarif, date_depart, date_arrivee) VALUES
+(1, 1, 1, 15, 10.00, '2024-06-01 08:00:00', '2024-06-01 08:15:00'),
+(2, 2, 2, 30, 20.00, '2024-06-01 09:00:00', '2024-06-01 09:30:00'), 
+(3, 3, 3, 45, 30.00, '2024-06-01 10:00:00', '2024-06-01 10:45:00');
