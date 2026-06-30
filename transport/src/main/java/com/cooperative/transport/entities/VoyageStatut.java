@@ -13,25 +13,25 @@ import jakarta.persistence.FetchType;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tarif_voyage")
+@Table(name = "voyage_statut")
 @Getter
 @Setter
-public class TarifVoyage {
+public class VoyageStatut {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_categorie", nullable = false)
-    private CategorieVehicule categorie;
+    @JoinColumn(name = "id_voyage", nullable = false)
+    private Voyages voyage;
 
-    @Column(name = "prix", precision = 10, scale = 2)
-    private BigDecimal prix;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_statut", nullable = false)
+    private StatutVoyage statut;
 
     @Column(name = "date_modification")
     private LocalDate dateModification;
