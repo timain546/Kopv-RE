@@ -58,3 +58,15 @@ CREATE TABLE tarif_voyage(
     prix NUMERIC(10, 2) NOT NULL,
     date_modification DATE NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE statut_voyage(
+    id SERIAL PRIMARY KEY,
+    libelle VARCHAR(30) NOT NULL UNIQUE
+);
+
+CREATE TABLE voyage_statut(
+    id SERIAL PRIMARY KEY,
+    id_voyage INT NOT NULL REFERENCES voyages(id) ON DELETE CASCADE,
+    id_statut INT NOT NULL REFERENCES statut_voyage(id) ON DELETE CASCADE,
+    date_modification DATE NOT NULL DEFAULT NOW()
+);
