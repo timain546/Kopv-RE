@@ -9,10 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.OrderBy;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -46,6 +48,10 @@ public class Voyages {
 
     @Column(name = "tarif", precision = 10, scale = 2)
     private BigDecimal tarif;
+
+    @OneToMany(mappedBy = "voyage")
+    @OrderBy("dateModification DESC")
+    private List<VoyageStatut> voyageStatuts;
 
     public Voyages() {}
 
