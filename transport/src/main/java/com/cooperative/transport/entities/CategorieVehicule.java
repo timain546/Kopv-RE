@@ -25,7 +25,7 @@ public class CategorieVehicule {
     private String libelle;
 
     @OneToMany(mappedBy = "categorie")
-    private List<Vehicule> vehicules;
+    private List<Vehicules> vehicules;
 
     @OneToMany(mappedBy = "categorie")
     private List<TarifVoyage> tarifVoyages;
