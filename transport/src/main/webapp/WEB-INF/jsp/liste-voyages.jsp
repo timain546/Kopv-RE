@@ -8,6 +8,7 @@
 <%@ page import="com.cooperative.transport.entities.Vehicules" %>
 
 <%
+    Integer nbActif = (Integer) request.getAttribute("nbActif");
     List<Voyages> voyages = (List<Voyages>) request.getAttribute("listeVoyages");
 %>
 
@@ -29,7 +30,7 @@
                     <i class="fa-solid fa-bus text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-sm font-black text-slate-800 tracking-tight">KOPV</h1>
+                    <h1 class="text-sm font-black text-slate-800 tracking-tight">KOP-V</h1>
                     <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">Management</p>
                 </div>
             </div>
@@ -89,7 +90,7 @@
         <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden flex flex-col">
             <div class="bg-slate-50/70 border-b border-slate-100 px-4 py-3 flex justify-between items-center">
                 <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Rotations planifiées</span>
-                <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">2 Voyages actifs</span>
+                <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full"><%= nbActif.intValue() %> Voyages actifs</span>
             </div>
 
             <div class="overflow-x-auto">
