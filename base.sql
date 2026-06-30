@@ -49,6 +49,12 @@ CREATE TABLE voyages(
     id_chauffeur INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
     duree_estimee_minutes INT NOT NULL,
     tarif NUMERIC(10, 2) NOT NULL,
-    date_depart TIMESTAMP NOT NULL,
-    date_arrivee TIMESTAMP NOT NULL
+    date_heure_depart TIMESTAMP NOT NULL
+);
+
+CREATE TABLE tarif_voyage(
+    id SERIAL PRIMARY KEY,
+    id_categorie INT NOT NULL REFERENCES categorie_vehicule(id) ON DELETE CASCADE,
+    prix NUMERIC(10, 2) NOT NULL,
+    date_modification DATE NOT NULL DEFAULT NOW()
 );
