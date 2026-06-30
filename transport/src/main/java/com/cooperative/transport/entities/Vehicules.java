@@ -24,7 +24,7 @@ public class Vehicules {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String immatriculation;
     private String modele;
@@ -39,10 +39,10 @@ public class Vehicules {
     @OneToMany(mappedBy = "vehicule")
     private List<Voyages> voyages;
 
-    public Vehicules() {}
+    public Vehicules() {
+    }
 
-    public Vehicules(String immatriculation, String modele, CategorieVehicule categorie, Integer nombrePlaces)
-    {
+    public Vehicules(String immatriculation, String modele, CategorieVehicule categorie, Integer nombrePlaces) {
         this.immatriculation = immatriculation;
         this.modele = modele;
         this.categorie = categorie;

@@ -20,14 +20,15 @@ public class StatutVoyage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String libelle;
 
     @OneToMany(mappedBy = "statut")
     private List<VoyageStatut> voyageStatuts;
 
-    public StatutVoyage() {}
+    public StatutVoyage() {
+    }
 
     public StatutVoyage(String libelle) {
         this.libelle = libelle;
