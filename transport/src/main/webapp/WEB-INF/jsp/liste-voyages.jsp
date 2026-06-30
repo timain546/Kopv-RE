@@ -1,5 +1,11 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ page import="java.util.List" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ page import="com.cooperative.transport.entities.Voyages" %>
+<%@ page import="com.cooperative.transport.entities.Trajets" %>
+<%@ page import="com.cooperative.transport.entities.Utilisateurs" %>
+<%@ page import="com.cooperative.transport.entities.Vehicules" %>
 
 <%
     List<Voyages> voyages = (List<Voyages>) request.getAttribute("listeVoyages");
@@ -102,19 +108,35 @@
                             for(Voyages v : voyages) {
                                 String reference = "V-00" + v.getId();
                                 String statut = v.getStatutActuel().getStatut().getLibelle();
-                                String villeDepart = v.getTrajet().getGareDepart().getVille();
-                                String villeArrivee = v.getTrajet().getGareArrivee().getVille();
+                                
+                                Trajets trajet = v.getTrajet();
+                                String villeDepart = trajet.getGareDepart().getVille();
+                                String villeArrivee = trajet.getGareArrivee().getVille();
                                 String duree = v.getDureeEstimeeMinutes() + " min";
-                                String modeleVehicule = v.getVehicule().getModele();
-                                String immatriculation = v.getVehicule().getImmatriculation();
-                                String nomChauffeur = v.getChauffeur().getNom() + " " + v.getChauffeur().getPrenom();
-                                String dateDepart = v.getDateHeureDepart().toLocalDate().toString();
-                                String heureDepart = v.getDateHeureDepart().toLocalTime().toString();
+
+                                Vehicules vehicule = v.getVehicule();
+                                String modeleVehicule = vehicule.getModele();
+                                String immatriculation = vehicule.getImmatriculation();
+
+                                Utilisateurs chauffeur = v.getChauffeur();
+                                String nomChauffeur = chauffeur.getNom() + " " + chauffeur.getPrenom();
+
+                                LocalDateTime dateHeureDepart = v.getDateHeureDepart();
+                                String dateDepart = dateHeureDepart.toLocalDate().toString();
+                                String heureDepart = dateHeureDepart.toLocalTime().toString();
                         %>
                             <tr class="hover:bg-slate-50/40 transition">
                                 <td class="py-4 px-4">
                                     <div class="font-bold text-slate-700"><%= reference %></div>
-                                    <span class="text-[9px] font-black uppercase text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= statut %></span>
+                                    <% if(statut.equals("En cours")) { %>
+                                        <span class="text-[9px] font-black uppercase text-amber-600 bg-amber-50 border border-amber-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= statut %></span>
+                                    <% } else if(statut.equals("Terminé")) { %>
+                                        <span class="text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= statut %></span>
+                                    <% } else if(statut.equals("Annulé") || statut.equals("En panne")) { %>
+                                        <span class="text-[9px] font-black uppercase text-red-600 bg-red-50 border border-red-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= statut %></span>
+                                    <% } else { %>
+                                        <span class="text-[9px] font-black uppercase text-blue-600 bg-blue-50 border border-blue-100 px-1.5 py-0.2 rounded mt-0.5 inline-block"><%= statut %></span>
+                                    <% } %>
                                 </td>
                                 <td class="py-4 px-4">
                                     <div class="font-bold text-slate-700 flex items-center gap-1.5">
