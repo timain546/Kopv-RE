@@ -38,6 +38,20 @@
                     <i class="fa-solid fa-route text-base"></i>
                     <span>Gestion Voyages</span>
                 </a>
+                <a href="carte-pannes.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-semibold text-sm transition">
+                    <i class="fa-solid fa-triangle-exclamation text-base"></i>
+                    <span>Suivi des Pannes</span>
+                    <span class="ml-auto bg-rose-100 text-rose-600 text-[10px] font-bold px-2 py-0.5 rounded-full">2</span>
+                </a>
+                <a href="crud-trajets.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-semibold text-sm transition">
+                    <i class="fa-solid fa-map-location-dot text-base"></i>
+                    <span>CRUD Trajets</span>
+                </a>
+                <a href="notifications.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-50 font-semibold text-sm transition">
+                    <i class="fa-solid fa-bell text-base"></i>
+                    <span>Notifications</span>
+                    <span class="ml-auto bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full">5</span>
+                </a>
             </nav>
         </div>
     </aside>
@@ -95,7 +109,7 @@
                                 String dateDepart = dateHeureDepart.toLocalDate().toString();
                                 String heureDepart = dateHeureDepart.toLocalTime().toString();
 
-                                boolean estInaccessible = statut.equals("En cours") || statut.equals("Terminé");
+                                boolean estInaccessible = statut.equals("En cours") || statut.equals("Terminé") || statut.equals("Annulé");
                         %>
                             <tr id="row-voyage-<%= idVoyage %>" class="hover:bg-slate-50/40 transition">
                                 <td class="py-4 px-4">
@@ -196,45 +210,43 @@
             btnConfirm.disabled = true;
             btnConfirm.innerText = "Traitement...";
 
-            fetch('/api/voyages/annuler?id=' + voyageIdSelectionne, {
-                method: 'POST',
+            fetch('http://localhost:8080/api/voyage/annuler/' + voyageIdSelectionne, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error("Erreur lors de l'annulation de la feuille de route.");
-                }
-                return response.json();
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        return Promise.reject(data.message || "Erreur lors de l'annulation de la feuille de route.");
+                    }
+                    return data;
+                });
             })
             .then(data => {
-                if (data.status === "success") {
-                    alert(data.message);
-                    
-                    // Mettre à jour dynamiquement le badge de statut
-                    const badgeContainer = document.getElementById(`badge-container-${voyageIdSelectionne}`);
+                alert(data.message);
+                
+                const badgeContainer = document.getElementById(`badge-container-${voyageIdSelectionne}`);
+                if (badgeContainer) {
                     badgeContainer.innerHTML = `<span class="text-[9px] font-black uppercase text-red-600 bg-red-50 border border-red-100 px-1.5 py-0.2 rounded mt-0.5 inline-block">Annulé</span>`;
-                    
-                    // Rendre les boutons d'actions inaccessibles (les remplacer par les versions désactivées)
-                    const actionsCell = document.querySelector(`#row-voyage-${voyageIdSelectionne} td:last-child .flex`);
-                    if (actionsCell) {
-                        actionsCell.innerHTML = `
-                            <div class="w-8 h-8 rounded-lg border border-slate-100 text-slate-300 bg-slate-50 flex items-center justify-center text-xs cursor-not-allowed" title="Modification impossible">
-                                <i class="fa-solid fa-pen"></i>
-                            </div>
-                            <div class="w-8 h-8 rounded-lg border border-slate-100 text-slate-300 bg-slate-50 flex items-center justify-center text-xs cursor-not-allowed" title="Annulation impossible">
-                                <i class="fa-solid fa-ban"></i>
-                            </div>
-                        `;
-                    }
-                } else {
-                    alert("Erreur : " + data.message);
+                }
+                
+                const actionsCell = document.querySelector(`#row-voyage-${voyageIdSelectionne} td:last-child .flex`);
+                if (actionsCell) {
+                    actionsCell.innerHTML = `
+                        <div class="w-8 h-8 rounded-lg border border-slate-100 text-slate-300 bg-slate-50 flex items-center justify-center text-xs cursor-not-allowed" title="Modification impossible">
+                            <i class="fa-solid fa-pen"></i>
+                        </div>
+                        <div class="w-8 h-8 rounded-lg border border-slate-100 text-slate-300 bg-slate-50 flex items-center justify-center text-xs cursor-not-allowed" title="Annulation impossible">
+                            <i class="fa-solid fa-ban"></i>
+                        </div>
+                    `;
                 }
             })
-            .catch(error => {
-                console.error("Erreur AJAX :", error);
-                alert("Une erreur est survenue lors de la communication avec le serveur.");
+            .catch(errorMessage => {
+                console.error("Erreur AJAX :", errorMessage);
+                alert(errorMessage);
             })
             .finally(() => {
                 btnConfirm.disabled = false;
