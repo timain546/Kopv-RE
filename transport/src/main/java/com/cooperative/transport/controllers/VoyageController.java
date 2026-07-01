@@ -4,12 +4,19 @@ import com.cooperative.transport.entities.Voyages;
 import com.cooperative.transport.entities.VoyageStatut;
 import com.cooperative.transport.services.VoyageService;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Optional;
 
 @Controller
 public class VoyageController {
@@ -29,5 +36,41 @@ public class VoyageController {
         model.addAttribute("nbActif", new Integer(nbActif));
         model.addAttribute("listeVoyages", voyages);
         return "liste-voyages";
+    }
+
+    @PostMapping("/api/voyage/annuler")
+    public ResponseEntity<Map<String, Object>> annulerVoyage(@RequestParam("id") Integer id) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Optional<Voyages> optionalVoyage = service.findVoyageById(id);
+
+            if(!optionalVoyage.isEmpty()) {
+                Voyages voyage = optionalVoyage.get();
+                String libelleStatut = voyage.getStatutActuel().getStatut().getLibelle();
+
+                if(libelleStatut.equalsIgnoreCase("En cours") || libelleStatut.equalsIgnoreCase("Terminé")) {
+                    response.put("status", "error");
+                    response.put("message", "Impossible d'annuler un voyage déjà en cours ou terminé");
+                    return ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+                }
+
+                // Faire appel à la méthode de service
+                service.annuler(voyage);
+
+                response.put("status", "success");
+                response.put("message", "Le voyage V-00" + voyage.getId() + " a été annulé avec succès!!");
+                return ResponseEntity<>(response, HttpStatus.OK);
+
+            } else {
+                response.put("status", "error");
+                response.put("message", "Voyage introuvable");
+                return ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch(Exception e) {
+            response.put("status", "error");
+            response.put("message", "Une erreur interne est survenue : " + e.getMessage());
+            return ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
